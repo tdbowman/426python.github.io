@@ -28,11 +28,51 @@ jobs:
           BASE_URL: /tbowman.github.io
         run: myst build --html
 
+      # GoatCounter page-view counting (no cookies, no personal data).
+      # MyST has no built-in GoatCounter option, so this step adds the
+      # counter script to every built page. Set GOATCOUNTER_CODE to the
+      # site code you chose at goatcounter.com (the "xxx" in
+      # https://xxx.goatcounter.com). Leave it blank to skip counting.
+      - name: Add GoatCounter
+        env:
+          GOATCOUNTER_CODE: "tdbowman"
+        run: |
+          if [ -z "$GOATCOUNTER_CODE" ]; then
+            echo "GOATCOUNTER_CODE not set; skipping analytics."
+            exit 0
+          fi
+          python3 - <<'PY'
+          import os, pathlib
+          code = os.environ["GOATCOUNTER_CODE"].strip()
+          # MyST pages switch chapters without a full reload, so we turn off
+          # GoatCounter's automatic count and count each new URL ourselves.
+          snippet = (
+              "<script>window.goatcounter={no_onload:true};(function(){var last=null;"
+              "function c(){var p=location.pathname;"
+              "if(p===last||!window.goatcounter.count)return;last=p;"
+              "window.goatcounter.count({path:p});}"
+              "window.addEventListener('load',function(){c();setInterval(c,1000);});"
+              "})();</script>"
+              f'<script data-goatcounter="https://{code}.goatcounter.com/count" '
+              'async src="//gc.zgo.at/count.js"></script>'
+          )
+          n = 0
+          for f in pathlib.Path("_build/html").rglob("*.html"):
+              html = f.read_text(encoding="utf-8")
+              if "gc.zgo.at/count.js" in html or "</head>" not in html:
+                  continue
+              f.write_text(html.replace("</head>", snippet + "</head>", 1), encoding="utf-8")
+              n += 1
+          print(f"GoatCounter added to {n} pages")
+          if n == 0:
+              raise SystemExit("No pages were updated; check the build output.")
+          PY
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v4
         with:
           path: _build/html
-          
+
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
