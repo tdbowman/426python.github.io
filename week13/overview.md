@@ -4,6 +4,37 @@
 
 Welcome to Week 13! This is where everything comes together. You'll apply all your Python skills to build and control a virtual robot—no hardware required!
 
+## Watch: Robotics: Sense, Decide, Act
+
+:::{iframe} https://tdbowman.github.io/426python.github.io/videos/week13.html
+:width: 100%
+:label: week13-animation
+
+**Week 13 animation (0:58).** A virtual robot that reads its sensors and chooses what to do. Watch the code on the left, and what Python stores and prints on the right. Pause anytime.
+:::
+
+:::{dropdown} Text version of the animation
+**Set the scene**
+
+- GridWorld, Robot, and GRID come from this week's textbook code. Our robot starts at row 0, col 0, heading east, among bookshelves (▥), with a goal (★).
+
+**The loop**
+
+- Each tick: sense the world, decide with if/else, then act. The # comments label each part.
+
+**Run it**
+
+- Tick 0: not at the goal, no obstacle ahead, so the else branch runs: move forward.
+- Tick 1: still clear. Move again.
+- Tick 2: `obstacle_ahead()` senses a shelf. The robot decides to turn right, and now heads south.
+- Tick 3: the way south is clear. Move.
+- Tick 4: move onto the goal square.
+- Tick 5: `at_goal()` is True, so break ends the loop early. `range(12)` was only a safety limit.
+- Five actions to reach the goal, all chosen by the robot itself.
+
+**Key idea:** Robots sense, decide, and act, over and over. Each pass through the loop reads the sensors, picks an action with if/else, and changes the robot's state. A limit like `range(12)` keeps a confused robot from looping forever.
+:::
+
 ## Learning Objectives
 
 By the end of this week, you will be able to:

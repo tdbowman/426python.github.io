@@ -4,6 +4,43 @@
 
 Welcome to Week 2! This week builds on what you learned in Week 1 by diving deeper into Python syntax and exploring the different data types available in Python. You'll learn how Python interprets your code and how to work with numbers, text, and logical values.
 
+## Watch: Variables & Data Types
+
+:::{iframe} https://tdbowman.github.io/426python.github.io/videos/week02.html
+:width: 100%
+:label: week02-animation
+
+**Week 2 animation (1:14).** Names, values, and the kinds of data Python can store. Watch the code on the left, and what Python stores and prints on the right. Pause anytime.
+:::
+
+:::{dropdown} Text version of the animation
+**Write it**
+
+- Four facts about one book in our catalog, each stored in a variable. The name goes on the left, the value on the right.
+
+**Run it**
+
+- Line 1 assigns "Dune" to title. Text in quotes is a string, type str.
+- A whole number with no decimal point is an int.
+- A number with a decimal point is a float.
+- True and False are booleans, type bool. They must be capitalized.
+
+**Is assigned**
+
+- Someone checks out our only copy. As math, copies = copies - 1 is impossible. In Python, = means “is assigned.”
+- Python works out the right side first: copies - 1 is 1 - 1, which is 0. Then it stores 0 in copies, replacing the old value.
+- A comparison like copies > 0 produces a bool. We use it to update on_shelf.
+- 0 > 0 is False, so on_shelf now holds False.
+- `print()` looks up each name and shows its current value.
+
+**Case matters**
+
+- Now one small change: a capital T in Title.
+- Python is case-sensitive. Title and title are different names, and only title exists in memory.
+
+**Key idea:** A variable is a name for a value. Read = as “is assigned.” Every value has a type (str, int, float, bool). Python works out the right side first, then stores the result under the name on the left.
+:::
+
 ## Learning Objectives
 
 By the end of this week, you will be able to:

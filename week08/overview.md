@@ -4,6 +4,40 @@
 
 Welcome to Week 8! Modules let you organize code into reusable files and access Python's vast standard library. You'll learn to import existing modules and create your own.
 
+## Watch: Modules
+
+:::{iframe} https://tdbowman.github.io/426python.github.io/videos/week08.html
+:width: 100%
+:label: week08-animation
+
+**Week 8 animation (1:01).** Splitting a program across files, and reusing code with import. Watch the code on the left, and what Python stores and prints on the right. Pause anytime.
+:::
+
+:::{dropdown} Text version of the animation
+**Write a module**
+
+- Any .py file can be a module. Here's fines.py: a daily rate, a maximum fine, and a function that calculates a late fine.
+
+**Import it**
+
+- In a separate file, main.py, import fines loads that module so we can use it.
+- import runs fines.py once and keeps everything it defined inside a module object named fines.
+- fines.calculate means “calculate, from inside fines.” 6 days × 0.25 = 1.5.
+- 60 days would be 15.0, but `min()` caps it at MAX_FINE: 10.0.
+
+**Common slip**
+
+- A common slip: leaving off the module name.
+- calculate lives inside fines, not in main.py, so Python can't find it on its own.
+
+**from … import**
+
+- Or import just the name you need. from fines import calculate lets you call it directly.
+- Same results. Now calculate is a name in main.py itself.
+
+**Key idea:** A module is just a .py file you can import. Use module.name to reach what's inside, or from module import name to bring one name in. Your own files and Python's standard library (math, datetime, …) work the same way.
+:::
+
 ## Learning Objectives
 
 By the end of this week, you will be able to:

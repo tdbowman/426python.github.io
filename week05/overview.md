@@ -4,6 +4,42 @@
 
 Welcome to Week 5! Loops allow you to repeat code multiple times - essential for processing collections of data, automating repetitive tasks, and building powerful programs.
 
+## Watch: Loops & Accumulators
+
+:::{iframe} https://tdbowman.github.io/426python.github.io/videos/week05.html
+:width: 100%
+:label: week05-animation
+
+**Week 5 animation (1:21).** Repeating the same steps for every item in a list. Watch the code on the left, and what Python stores and prints on the right. Pause anytime.
+:::
+
+:::{dropdown} Text version of the animation
+**Add them up**
+
+- A reading log: pages read on three days. A for loop runs the indented line once for each item in the list.
+- total starts at 0. It's an accumulator: it builds up the answer as the loop runs.
+- Pass 1: p is the first item, 40. total = total + p, so 0 + 40 = 40.
+- Pass 2: p is 12. 40 + 12 = 52.
+- Pass 3: p is 25. 52 + 25 = 77.
+- No items left, so the loop ends and Python moves on to print.
+
+**Find the minimum**
+
+- Now find the slowest day, with the same pattern. But starting fewest at 0 is a trap.
+- fewest starts at 0.
+- Is 40 < 0? No. Is 12 < 0? No. Is 25 < 0? No. Line 5 never runs, so fewest never changes.
+- No day had 0 pages! Python raised no error, but the answer is wrong: 0 beat every real value before the loop began.
+
+**Start with real data**
+
+- The fix: start with a real value from the list. `pages[0]` is the first item.
+- fewest starts at 40.
+- Pass 1 compares 40 with itself, so nothing happens. Pass 2: 12 < 40 is True, so fewest becomes 12.
+- Pass 3: 25 isn't smaller, so fewest stays 12. Now the answer is right.
+
+**Key idea:** A loop repeats the same steps for every item. An accumulator carries a result from one pass to the next. Start it with a value that can't win by accident: 0 for a total, but the first item (not 0) for a minimum or maximum.
+:::
+
 ## Learning Objectives
 
 By the end of this week, you will be able to:

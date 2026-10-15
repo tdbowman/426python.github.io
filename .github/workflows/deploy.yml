@@ -28,6 +28,13 @@ jobs:
           BASE_URL: /426python.github.io
         run: myst build --html
 
+      # Weekly code animations (rendered with Remotion in a separate project).
+      # MyST only publishes files that pages reference, and its own video
+      # embed has no play/pause controls, so each video gets a small player
+      # page in videos/ that the week overviews show in an iframe.
+      - name: Add weekly animation videos
+        run: cp -r videos _build/html/videos
+
       # GoatCounter page-view counting (no cookies, no personal data).
       # MyST has no built-in GoatCounter option, so this step adds the
       # counter script to every built page. Set GOATCOUNTER_CODE to the

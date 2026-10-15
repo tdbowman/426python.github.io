@@ -4,6 +4,40 @@
 
 Welcome to Week 3! This week we'll dive deeper into working with strings, learn how to get input from users, and master type conversions. You'll build on the foundation from Weeks 1-2 to create more interactive programs.
 
+## Watch: Input Is Always a String
+
+:::{iframe} https://tdbowman.github.io/426python.github.io/videos/week03.html
+:width: 100%
+:label: week03-animation
+
+**Week 3 animation (1:02).** Getting data from the user, and converting it before you do math. Watch the code on the left, and what Python stores and prints on the right. Pause anytime.
+:::
+
+:::{dropdown} Text version of the animation
+**Ask the user**
+
+- `input()` shows a prompt, waits for the user to type, and gives back what they typed. Let's ask how many days a book is overdue.
+- The user types 3. But look at memory: '3' in quotes, type str. `input()` always returns text, even when you type a number.
+
+**Do the math**
+
+- Late fees are 25 cents a day, so we multiply.
+- Python stops: '3' is text, not the number 3. (Text times a whole number repeats it: `'3' * 2` is '33'. Text times 0.25 is an error.)
+
+**Convert it**
+
+- The fix: wrap `input()` in `int()`. `int()` converts the text '3' into the whole number 3.
+- Same typing, but now memory holds 3 with no quotes: an int.
+- Now the math works: 3 * 0.25 is 0.75.
+
+**Show the result**
+
+- An f-string starts with f before the quote. Each `{name}` inside it is filled in with that variable's value.
+- `{fee}` becomes 0.75, and the patron sees their late fee.
+
+**Key idea:** Everything `input()` gives you is a string. Even when the user types a number, you get text. Convert it with `int()` or `float()` before you do math with it.
+:::
+
 ## Learning Objectives
 
 By the end of this week, you will be able to:

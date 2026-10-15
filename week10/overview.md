@@ -4,6 +4,32 @@
 
 Welcome to Week 10! Learn to fetch data from the internet and work with web APIs to access real-world data sources.
 
+## Watch: Internet Data & APIs
+
+:::{iframe} https://tdbowman.github.io/426python.github.io/videos/week10.html
+:width: 100%
+:label: week10-animation
+
+**Week 10 animation (0:53).** Asking another program for data, and reading its answer. Watch the code on the left, and what Python stores and prints on the right. Pause anytime.
+:::
+
+:::{dropdown} Text version of the animation
+**Ask**
+
+- An API is a web address built for programs instead of people. We'll ask Open Library's search API about Dune.
+- params= builds the ?q=dune&limit=1 part of the address for us. timeout=10 stops with an error if the server goes silent for 10 seconds, instead of waiting forever.
+- The server answers. Status code 200 means OK.
+
+**Read the answer**
+
+- Check first: r.ok is True for a good answer. If the server answers with an error code, we print it instead of trying to read bad data.
+- The reply is JSON text. `r.json()` turns it into a Python dictionary. (Shortened here: the real one is much bigger.)
+- `data["docs"]` is a list of results, and [0] picks the first one, which is itself a dictionary.
+- Pick out the fields we need: Dune, first published in 1965.
+
+**Key idea:** An API lets your program ask another program for data. Send a request with params= and a timeout=, check the status before you trust the answer, then use `.json()` to turn the reply into dictionaries and lists.
+:::
+
 ## Learning Objectives
 
 - Understand what APIs are and how they work

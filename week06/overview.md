@@ -4,6 +4,41 @@
 
 Welcome to Week 6! Lists and tuples are fundamental data structures in Python. They let you store collections of data and work with them efficiently.
 
+## Watch: Lists & Tuples
+
+:::{iframe} https://tdbowman.github.io/426python.github.io/videos/week06.html
+:width: 100%
+:label: week06-animation
+
+**Week 6 animation (1:16).** Collections you can change, and collections you can't. Watch the code on the left, and what Python stores and prints on the right. Pause anytime.
+:::
+
+:::{dropdown} Text version of the animation
+**Lists change**
+
+- A list holds items in order, inside square brackets.
+- titles now refers to a list of two strings.
+- Lists are mutable: you can change them after they're made. `.append()` adds an item to the end.
+- Same list, now with three items.
+
+**Sort it**
+
+- Let's sort the titles and keep the result in ranked.
+- titles is now sorted, but ranked is None! `.sort()` changes the list in place and returns None.
+- It's the same trap as print vs. return in Week 4: no return value means None.
+- `sorted()` is different: it leaves the original alone and returns a new, sorted list.
+- Now ranked holds the sorted copy, and titles keeps its original order.
+
+**Tuples don't**
+
+- A tuple uses parentheses. Tuples are immutable: once made, they can't change. Good for a fixed record, like a branch's name and ZIP code.
+- Reading works just like a list. Indexes start at 0, so `branch[0]` is the first item.
+- But what if we try to change an item?
+- Python refuses. That's the point of a tuple: the record stays exactly as it was made.
+
+**Key idea:** Lists are mutable. Tuples are immutable. Change a list in place with methods like `.append()` and `.sort()`, which return None. Use `sorted()` for a new list, and a tuple for a record that shouldn't change.
+:::
+
 ## Learning Objectives
 
 By the end of this week, you will be able to:

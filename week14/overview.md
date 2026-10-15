@@ -4,6 +4,43 @@
 
 Welcome to Week 14 - the culmination of your Python journey! This week you'll complete and present your virtual robot capstone project that demonstrates everything you've learned.
 
+## Watch: Capstone: Putting It Together
+
+:::{iframe} https://tdbowman.github.io/426python.github.io/videos/week14.html
+:width: 100%
+:label: week14-animation
+
+**Week 14 animation (0:55).** One small robot program that uses every block of the course. Watch the code on the left, and what Python stores and prints on the right. Pause anytime.
+:::
+
+:::{dropdown} Text version of the animation
+**Block 3: objects**
+
+- Line 1: a Robot object (Week 12) in the Week 13 grid world, with its own row, col, and heading.
+
+**Block 2: data**
+
+- A list (Week 6) records why the robot did each thing. Each entry is an f-string (Week 3) with the tick number.
+
+**Block 1–2: logic**
+
+- A for loop (Week 5) with if/else decisions (Week 2): the sense-decide-act cycle from Week 13.
+
+**Run it**
+
+- Tick 0: clear, so move, and log the reason.
+- Tick 1: clear again.
+- Tick 2: a shelf ahead. Turn right, and record that it was blocked.
+- Tick 3: move.
+- Tick 4: move onto the goal. On tick 5, `at_goal()` is True and the loop breaks.
+
+**Block 3: files**
+
+- Finally, save the log to a file (Week 9). `"\n".join()` puts each reason on its own line. Now anyone can see what the robot did, and why.
+
+**Key idea:** Your capstone is every week, working together. Objects hold the robot's state, loops and if/else make its decisions, lists remember why, and files keep a record you can read later. A robot that explains itself is easier to debug and to trust.
+:::
+
 ## Learning Objectives
 
 - Complete a comprehensive robotics simulation project

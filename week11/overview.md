@@ -4,6 +4,42 @@
 
 Welcome to Week 11! Learn to work with JSON data format and connect Python to PostgreSQL databases for powerful data management.
 
+## Watch: JSON & SQL
+
+:::{iframe} https://tdbowman.github.io/426python.github.io/videos/week11.html
+:width: 100%
+:label: week11-animation
+
+**Week 11 animation (1:17).** Turning text into data, and talking to a database safely. Watch the code on the left, and what Python stores and prints on the right. Pause anytime.
+:::
+
+:::{dropdown} Text version of the animation
+**JSON is text**
+
+- JSON is a text format that looks a lot like a Python dictionary. APIs and files hand it to you as a string.
+- text is a str, not a dict, even though it has braces and keys.
+- So what happens if we treat it like a dictionary?
+- A string can only be indexed by position (`text[0]`, `text[1]`, …), not by a key.
+
+**Parse it**
+
+- `json.loads()` (“load string”) parses the text into a real dictionary.
+- Now book is a dict and 42 is an int, so lookups and math work. (`json.dumps()` goes the other way: data to text.)
+
+**Query a database**
+
+- Now a database. library.db already has a books table. A patron searches for a title that contains an apostrophe.
+- The f-string pastes the title straight into the SQL. Look at the quotes: 'Ender' ends early, and s Game' is left over.
+- The database can't read it. Worse, a crafted title could rewrite the query itself. That's SQL injection.
+
+**Use placeholders**
+
+- Never build SQL with f-strings. Put a ? placeholder in the SQL and pass the values separately.
+- The database handles the quotes safely, and we get the row back. With PostgreSQL and psycopg2, the placeholder is %s instead of ?.
+
+**Key idea:** JSON is text until you parse it. SQL values go in placeholders, never f-strings. `json.loads()` turns JSON text into dictionaries and lists. Pass values to a query separately (? in sqlite3, %s in psycopg2) and the database handles the quoting safely.
+:::
+
 ## Learning Objectives
 
 - Work with JSON data in Python

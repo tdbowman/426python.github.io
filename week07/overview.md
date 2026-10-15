@@ -9,6 +9,35 @@ Welcome to Week 7! Dictionaries are one of Python's most powerful data structure
 Be prepared to demonstrate your understanding of concepts from Weeks 1-6.
 ```
 
+## Watch: Dictionaries
+
+:::{iframe} https://tdbowman.github.io/426python.github.io/videos/week07.html
+:width: 100%
+:label: week07-animation
+
+**Week 7 animation (1:04).** Looking things up by name instead of by position. Watch the code on the left, and what Python stores and prints on the right. Pause anytime.
+:::
+
+:::{dropdown} Text version of the animation
+**Count checkouts**
+
+- A dictionary stores key: value pairs. We'll count each title's checkouts, using the title as the key. `{}` is an empty dictionary.
+- `counts.get(title, 0)` means: the count for this title, or 0 if the title isn't a key yet. Add 1 and store it back.
+- Three checkouts, and an empty dictionary to count them in.
+- 'Dune' isn't a key yet, so `.get()` gives 0. 0 + 1 = 1, stored under 'Dune'.
+- 'Beloved' is new too, so it gets its own key with a count of 1.
+- 'Dune' again. Now it is a key, so `.get()` returns 1, and 1 + 1 = 2.
+- Each title appears once, with its total.
+
+**Missing keys**
+
+- What about a title nobody borrowed? Square brackets require the key to exist.
+- KeyError: there's no 'Neuromancer' key, so Python stops.
+- When a key might be missing, use `.get()` with a default. Neuromancer has 0 checkouts, and nothing crashes.
+
+**Key idea:** Dictionaries look things up by key, not by position. `counts.get(key, 0)` safely reads a key that may not exist yet. `counts[key]` raises a KeyError when it doesn't.
+:::
+
 ## Learning Objectives
 
 By the end of this week, you will be able to:

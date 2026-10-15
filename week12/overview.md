@@ -4,6 +4,37 @@
 
 Welcome to Week 12! Object-Oriented Programming (OOP) is a powerful programming paradigm that lets you organize code around objects and classes.
 
+## Watch: Classes & Objects
+
+:::{iframe} https://tdbowman.github.io/426python.github.io/videos/week12.html
+:width: 100%
+:label: week12-animation
+
+**Week 12 animation (1:00).** From dictionaries to blueprints: data and behavior together. Watch the code on the left, and what Python stores and prints on the right. Pause anytime.
+:::
+
+:::{dropdown} Text version of the animation
+**A dict as a record**
+
+- So far, a book has been a dictionary.
+- Simple and flexible.
+- Now a typo: lons instead of loans.
+- No error! The dictionary just adds a new key. loans is still 42, and the bug hides. Nothing says what a book must contain.
+
+**A class as a blueprint**
+
+- A class is a blueprint. Book defines what every book has (title, on_shelf) and what it can do (check_out), all in one place.
+
+**Make objects**
+
+- `Book("Dune")` creates an object and runs `__init__`. self is the new object, so self.title = title stores 'Dune' on it.
+- beloved is a second object from the same blueprint, with its own separate data.
+- `dune.check_out()` runs the method with self = dune, so only dune's on_shelf becomes False.
+- beloved is untouched. Each object keeps its own state.
+
+**Key idea:** A class is a blueprint. Each object has its own state. `__init__` sets an object's starting attributes, self means “this particular object,” and a method like `check_out()` changes only the object it's called on.
+:::
+
 ## Learning Objectives
 
 - Understand OOP concepts (classes, objects, inheritance)
