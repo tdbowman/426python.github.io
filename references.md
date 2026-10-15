@@ -156,7 +156,7 @@ disagree, the docs are right.
 
 Bowman, T. D. (2026). *Introduction to programming in Python* [Open textbook].
 Dominican University School of Information Studies.
-https://tdbowman.github.io/tbowman.github.io/
+https://tdbowman.github.io/426python.github.io/
 
 Built with **MyST Markdown** (https://mystmd.org/) and deployed with GitHub
 Pages.

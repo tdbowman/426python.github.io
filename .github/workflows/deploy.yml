@@ -25,7 +25,7 @@ jobs:
 
       - name: Build the book
         env:
-          BASE_URL: /tbowman.github.io
+          BASE_URL: /426python.github.io
         run: myst build --html
 
       # GoatCounter page-view counting (no cookies, no personal data).
