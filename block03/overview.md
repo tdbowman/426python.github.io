@@ -214,7 +214,7 @@ else:
 
 **Database Query Pattern:**
 ```python
-with psycopg2.connect(**conn_params) as conn:
+with psycopg.connect(**conn_params) as conn:   # closes the connection when done
     with conn.cursor() as cursor:
         cursor.execute("SELECT * FROM table WHERE condition")
         results = cursor.fetchall()

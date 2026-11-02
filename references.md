@@ -119,6 +119,8 @@ disagree, the docs are right.
 
 - freeCodeCamp. *How to use PostgreSQL in Python*. https://www.freecodecamp.org/news/postgresql-in-python/
 - PYnative. *Python PostgreSQL tutorial using psycopg2*. https://pynative.com/python-postgresql-tutorial/
+- Varrazzo, D. *Psycopg 3: Basic module usage*. https://www.psycopg.org/psycopg3/docs/basic/usage.html
+- SQLAlchemy authors. *SQLAlchemy 2.1 unified tutorial*. https://docs.sqlalchemy.org/en/21/tutorial/
 - GeeksforGeeks. *PostgreSQL — Querying data from Python*. https://www.geeksforgeeks.org/python/postgresql-python-querying-data/
 - Python Software Foundation. *sqlite3 — DB-API 2.0 interface for SQLite databases*. https://docs.python.org/3/library/sqlite3.html
 

@@ -35,9 +35,9 @@ Welcome to Week 11! Learn to work with JSON data format and connect Python to Po
 **Use placeholders**
 
 - Never build SQL with f-strings. Put a ? placeholder in the SQL and pass the values separately.
-- The database handles the quotes safely, and we get the row back. With PostgreSQL and psycopg2, the placeholder is %s instead of ?.
+- The database handles the quotes safely, and we get the row back. With PostgreSQL and psycopg, the placeholder is %s instead of ?.
 
-**Key idea:** JSON is text until you parse it. SQL values go in placeholders, never f-strings. `json.loads()` turns JSON text into dictionaries and lists. Pass values to a query separately (? in sqlite3, %s in psycopg2) and the database handles the quoting safely.
+**Key idea:** JSON is text until you parse it. SQL values go in placeholders, never f-strings. `json.loads()` turns JSON text into dictionaries and lists. Pass values to a query separately (? in sqlite3, %s in psycopg) and the database handles the quoting safely.
 :::
 
 ## Learning Objectives
@@ -61,7 +61,7 @@ Welcome to Week 11! Learn to work with JSON data format and connect Python to Po
 
 2. **PostgreSQL Basics**
    - What is PostgreSQL?
-   - Installing psycopg2
+   - Installing psycopg (version 3)
    - Connecting to databases
    - Creating tables
 
@@ -107,7 +107,8 @@ All assignments are due by 11:59 PM on the specified date in Canvas
 
 ### POSTGRESQL
 - [FreeCodeCamp > How to Use Postgres in Python](https://www.freecodecamp.org/news/postgresql-in-python/)
-- [PYnative > Python PostgreSQL Tutorial Using Psycopg2](https://pynative.com/python-postgresql-tutorial/)
+- [Psycopg 3 > Basic Module Usage](https://www.psycopg.org/psycopg3/docs/basic/usage.html)
+- [PYnative > Python PostgreSQL Tutorial Using Psycopg2](https://pynative.com/python-postgresql-tutorial/) (uses psycopg2, the older version; nearly identical)
 - [SQLAlchemy 2.1 > Unified Tutorial](https://docs.sqlalchemy.org/en/21/tutorial/)
 
 ---
@@ -153,25 +154,28 @@ with open("data.json", "r") as file:
 
 ## PostgreSQL with Python
 
-### Installing psycopg2 and SQLAlchemy
+### Installing psycopg and SQLAlchemy
 
 Run this once in the VS Code terminal, with your Anaconda environment active:
 
 ```bash
-pip install psycopg2-binary sqlalchemy pandas
+pip install "psycopg[binary]" sqlalchemy pandas
 ```
+
+We use **psycopg 3**, the current PostgreSQL driver for Python. Its module is named `psycopg`. Many older tutorials use `psycopg2`, the previous version; the code looks almost the same, but new projects should use psycopg 3.
 
 ### Connecting to Database
 
 ```python
-import psycopg2
+import os
+import psycopg
 
-# Connection parameters
-conn = psycopg2.connect(
+# Connection parameters (the password comes from an environment variable)
+conn = psycopg.connect(
     host="localhost",
-    database="mydb",
-    user="username",
-    password="password"
+    dbname="mydb",
+    user="postgres",
+    password=os.environ["PGPASSWORD"],
 )
 
 # Create cursor
@@ -190,13 +194,14 @@ conn.close()
 ### Better Way - Context Manager
 
 ```python
-import psycopg2
+import os
+import psycopg
 
-with psycopg2.connect(
+with psycopg.connect(
     host="localhost",
-    database="mydb",
-    user="username",
-    password="password"
+    dbname="mydb",
+    user="postgres",
+    password=os.environ["PGPASSWORD"],
 ) as conn:
     with conn.cursor() as cursor:
         cursor.execute("SELECT * FROM students")
@@ -204,17 +209,26 @@ with psycopg2.connect(
         for row in results:
             print(row)
 
-# The with block commits (or rolls back) for you,
-# but it does NOT close the connection. Close it yourself:
-conn.close()
+# When the with block ends, psycopg commits (or rolls back on an error)
+# and closes the connection for you.
+```
+
+### Rows as Dictionaries
+
+```python
+from psycopg.rows import dict_row
+
+with psycopg.connect(..., row_factory=dict_row) as conn:
+    row = conn.execute("SELECT name, grade FROM students WHERE id = %s", (1,)).fetchone()
+    print(row["name"], row["grade"])
 ```
 
 ### Creating Tables
 
 ```python
-import psycopg2
+import psycopg
 
-with psycopg2.connect(...) as conn:
+with psycopg.connect(...) as conn:
     with conn.cursor() as cursor:
         cursor.execute("""
             CREATE TABLE IF NOT EXISTS students (
@@ -231,7 +245,7 @@ with psycopg2.connect(...) as conn:
 
 ```python
 # Use parameters to prevent SQL injection!
-with psycopg2.connect(...) as conn:
+with psycopg.connect(...) as conn:
     with conn.cursor() as cursor:
         # Single insert
         cursor.execute(
@@ -255,7 +269,7 @@ with psycopg2.connect(...) as conn:
 ### Querying Data
 
 ```python
-with psycopg2.connect(...) as conn:
+with psycopg.connect(...) as conn:
     with conn.cursor() as cursor:
         # Fetch all
         cursor.execute("SELECT * FROM students")
@@ -274,7 +288,7 @@ with psycopg2.connect(...) as conn:
 ### Updating and Deleting
 
 ```python
-with psycopg2.connect(...) as conn:
+with psycopg.connect(...) as conn:
     with conn.cursor() as cursor:
         # Update
         cursor.execute(
@@ -293,7 +307,7 @@ with psycopg2.connect(...) as conn:
 
 ### Another Way: SQLAlchemy
 
-**SQLAlchemy** sits on top of psycopg2. You describe the database once, as a URL, and the rest of your code looks the same whether that database is PostgreSQL or SQLite. It is also what pandas expects for `read_sql()` and `to_sql()`.
+**SQLAlchemy** sits on top of psycopg. You describe the database once, as a URL, and the rest of your code looks the same whether that database is PostgreSQL or SQLite. It is also what pandas expects for `read_sql()` and `to_sql()`.
 
 ```python
 import os
@@ -302,7 +316,7 @@ from sqlalchemy import create_engine, text, URL
 
 # one URL describes the database (the password comes from an environment variable)
 url = URL.create(
-    "postgresql+psycopg2",
+    "postgresql+psycopg",
     username="postgres",
     password=os.environ["PGPASSWORD"],
     host="localhost",
@@ -334,7 +348,7 @@ print(df.head())
 engine.dispose()
 ```
 
-| | psycopg2 | SQLAlchemy |
+| | psycopg | SQLAlchemy |
 |---|---|---|
 | Placeholders | `%s` with a tuple | `:name` with a dictionary |
 | Saving changes | `conn.commit()` | `with engine.begin():` |
@@ -346,7 +360,7 @@ For the full, runnable version with a library catalog, see [Connecting Python to
 ## Practical Example: Student Database
 
 ```python
-import psycopg2
+import psycopg
 import json
 
 class StudentDatabase:
@@ -354,7 +368,7 @@ class StudentDatabase:
         self.conn_params = conn_params
     
     def add_student(self, name, age, grade):
-        with psycopg2.connect(**self.conn_params) as conn:
+        with psycopg.connect(**self.conn_params) as conn:
             with conn.cursor() as cursor:
                 cursor.execute(
                     "INSERT INTO students (name, age, grade) VALUES (%s, %s, %s)",
@@ -363,7 +377,7 @@ class StudentDatabase:
                 conn.commit()
     
     def get_all_students(self):
-        with psycopg2.connect(**self.conn_params) as conn:
+        with psycopg.connect(**self.conn_params) as conn:
             with conn.cursor() as cursor:
                 cursor.execute("SELECT * FROM students ORDER BY name")
                 return cursor.fetchall()
@@ -380,7 +394,7 @@ class StudentDatabase:
 # Use it
 db = StudentDatabase({
     "host": "localhost",
-    "database": "school",
+    "dbname": "school",
     "user": "user",
     "password": "pass"
 })
@@ -395,7 +409,7 @@ db.export_to_json("students.json")
 ✅ **JSON** - Lightweight data format  
 ✅ **json module** - Parse and generate JSON  
 ✅ **PostgreSQL** - Powerful relational database  
-✅ **psycopg2** - Python PostgreSQL adapter  
+✅ **psycopg** - Python PostgreSQL adapter (version 3)  
 ✅ **Parameters** - Safe SQL execution  
 ✅ **CRUD operations** - Create, Read, Update, Delete  
 ✅ **SQLAlchemy** - One URL, any database; the bridge to pandas  
