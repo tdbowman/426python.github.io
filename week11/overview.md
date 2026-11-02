@@ -49,6 +49,7 @@ Welcome to Week 11! Learn to work with JSON data format and connect Python to Po
 - Execute SQL queries from Python
 - Insert, update, and retrieve data
 - Use parameters safely to prevent SQL injection
+- Connect with SQLAlchemy and move query results into pandas
 
 ## Topics Covered
 
@@ -76,6 +77,11 @@ Welcome to Week 11! Learn to work with JSON data format and connect Python to Po
    - Using cursors
    - Transaction management
 
+5. **SQLAlchemy**
+   - Engines and connection URLs
+   - `text()` queries with named placeholders
+   - pandas `read_sql()` and `to_sql()`
+
 ## Assignments This Week
 
 ```{note}
@@ -102,6 +108,7 @@ All assignments are due by 11:59 PM on the specified date in Canvas
 ### POSTGRESQL
 - [FreeCodeCamp > How to Use Postgres in Python](https://www.freecodecamp.org/news/postgresql-in-python/)
 - [PYnative > Python PostgreSQL Tutorial Using Psycopg2](https://pynative.com/python-postgresql-tutorial/)
+- [SQLAlchemy 2.1 > Unified Tutorial](https://docs.sqlalchemy.org/en/21/tutorial/)
 
 ---
 
@@ -146,10 +153,12 @@ with open("data.json", "r") as file:
 
 ## PostgreSQL with Python
 
-### Installing psycopg2
+### Installing psycopg2 and SQLAlchemy
+
+Run this once in the VS Code terminal, with your Anaconda environment active:
 
 ```bash
-pip install psycopg2-binary --break-system-packages
+pip install psycopg2-binary sqlalchemy pandas
 ```
 
 ### Connecting to Database
@@ -194,6 +203,10 @@ with psycopg2.connect(
         results = cursor.fetchall()
         for row in results:
             print(row)
+
+# The with block commits (or rolls back) for you,
+# but it does NOT close the connection. Close it yourself:
+conn.close()
 ```
 
 ### Creating Tables
@@ -278,6 +291,58 @@ with psycopg2.connect(...) as conn:
         conn.commit()
 ```
 
+### Another Way: SQLAlchemy
+
+**SQLAlchemy** sits on top of psycopg2. You describe the database once, as a URL, and the rest of your code looks the same whether that database is PostgreSQL or SQLite. It is also what pandas expects for `read_sql()` and `to_sql()`.
+
+```python
+import os
+import pandas as pd
+from sqlalchemy import create_engine, text, URL
+
+# one URL describes the database (the password comes from an environment variable)
+url = URL.create(
+    "postgresql+psycopg2",
+    username="postgres",
+    password=os.environ["PGPASSWORD"],
+    host="localhost",
+    port=5432,
+    database="mydb",
+)
+engine = create_engine(url)
+
+# read: named placeholders (:min_grade) with a dictionary of values
+with engine.connect() as conn:
+    result = conn.execute(
+        text("SELECT name, grade FROM students WHERE grade > :min_grade"),
+        {"min_grade": 90},
+    )
+    for row in result:
+        print(row.name, row.grade)
+
+# write: engine.begin() commits when the block ends, or rolls back on an error
+with engine.begin() as conn:
+    conn.execute(
+        text("INSERT INTO students (name, age, grade) VALUES (:name, :age, :grade)"),
+        {"name": "Dana", "age": 23, "grade": 88.0},
+    )
+
+# straight into pandas
+df = pd.read_sql(text("SELECT * FROM students"), engine)
+print(df.head())
+
+engine.dispose()
+```
+
+| | psycopg2 | SQLAlchemy |
+|---|---|---|
+| Placeholders | `%s` with a tuple | `:name` with a dictionary |
+| Saving changes | `conn.commit()` | `with engine.begin():` |
+| Switching databases | PostgreSQL only | change the URL (e.g. `sqlite:///library.db`) |
+| With pandas | works, with a warning | what `read_sql()`/`to_sql()` expect |
+
+For the full, runnable version with a library catalog, see [Connecting Python to PostgreSQL](postgres-python.ipynb).
+
 ## Practical Example: Student Database
 
 ```python
@@ -333,3 +398,4 @@ db.export_to_json("students.json")
 ✅ **psycopg2** - Python PostgreSQL adapter  
 ✅ **Parameters** - Safe SQL execution  
 ✅ **CRUD operations** - Create, Read, Update, Delete  
+✅ **SQLAlchemy** - One URL, any database; the bridge to pandas  
